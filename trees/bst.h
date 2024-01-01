@@ -62,6 +62,18 @@ BSTNode* BSTSearch(BinarySearchTree tree, BSTData data);
 // Antes de usar, verifique se não há outras funções que possam fazer o que você quer, pois ela não é muito eficiente
 int BSTForEach(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order, int (*operation)(BSTNode* node));
 
+// Contar quantos itens a árvore possui
+int BSTCount(BinarySearchTree tree);
+
+// Calcular altura do nodo
+int BSTNodeHeight(BSTNode* node);
+
+// Calcular fator de balanceamento do nodo
+int BSTBalanceFactor(BinarySearchTree tree);
+
+// Calcular fator de balanceamento do nodo
+int BSTNodeBalanceFactor(BSTNode* node);
+
 // Imprimir árvore
 // Encapsulamento sobre BSTForEach() para imprimir a árvore
 void BSTPrintList(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order);

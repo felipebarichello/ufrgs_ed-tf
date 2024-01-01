@@ -120,6 +120,70 @@ int BSTForEach(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide 
     return _BSTForEach(tree.root, traversal, order, operation);
 }
 
+// Função interna recursiva para BSTCount
+// Não exposta no header
+int _BSTCount(BSTNode* node) {
+    if (node) {
+        return 1 + _BSTCount(node->left) + _BSTCount(node->right);
+    } else {
+        return 0;
+    }
+}
+
+int BSTCount(BinarySearchTree tree) {
+    _BSTCount(tree.root);
+}
+
+int BSTNodeHeight(BSTNode* node) {
+    if (!node) {
+        return 0;
+    }
+
+    int lheight = BSTNodeHeight(node->left);
+    int rheight = BSTNodeHeight(node->right);
+
+    if (lheight > rheight) {
+        return 1 + lheight;
+    } else {
+        return 1 + rheight;
+    }
+}
+
+// Função interna recursiva para BSTCount
+// Não exposta no header
+int _BSTBalanceFactor(BSTNode* node) {
+    if (!node) {
+        return 0;
+    }
+
+    int selfbalance = abs(BSTNodeBalanceFactor(node));
+    int lbalance = _BSTBalanceFactor(node->left);
+    int rbalance = _BSTBalanceFactor(node->right);
+
+    int higher;
+
+    if (lbalance > rbalance)
+        higher = lbalance;
+    else
+        higher = rbalance;
+
+    if (selfbalance > higher) {
+        return selfbalance;
+    } else {
+        return higher;
+    }
+}
+
+int BSTBalanceFactor(BinarySearchTree tree) {
+    return _BSTBalanceFactor(tree.root);
+}
+
+int BSTNodeBalanceFactor(BSTNode* node) {
+    int lheight = BSTNodeHeight(node->left);
+    int rheight = BSTNodeHeight(node->right);
+    return lheight - rheight;
+}
+
 // Função interna para BSTPrintList()
 // Não exposta no header
 int _BSTPrintNode_print(BSTNode* node) {
