@@ -20,11 +20,13 @@ typedef struct BinarySearchTree {
     BSTNode* root;
 } BinarySearchTree;
 
+// Lado que o filho está
 enum BSTSide {
     BST_LEFT,
     BST_RIGHT
 };
 
+// Ordem do caminhamento
 enum BSTTraversal {
     BST_TRAVERSAL_PRE,
     BST_TRAVERSAL_IN,

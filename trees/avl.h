@@ -23,11 +23,13 @@ typedef struct AVLTree {
     AVLNode* root;
 } AVLTree;
 
+// Lado que o filho está
 enum AVLSide {
     AVL_LEFT,
     AVL_RIGHT
 };
 
+// Ordem do caminhamento
 enum AVLTraversal {
     AVL_TRAVERSAL_PRE,
     AVL_TRAVERSAL_IN,
