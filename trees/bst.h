@@ -82,6 +82,9 @@ int BSTNodeBalanceFactor(BSTNode* node);
 // Encapsulamento sobre BSTForEach() para imprimir a árvore
 void BSTPrintList(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order);
 
+// Imprimir a árvore em um formato visual
+void BSTDraw(BinarySearchTree tree);
+
 // Romover item da lista
 // Retorna 1 se encontrou o produto, 0 caso contrário
 int BSTRemove(BinarySearchTree* tree, BSTData data);

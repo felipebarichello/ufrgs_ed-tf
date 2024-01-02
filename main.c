@@ -1,21 +1,83 @@
 #include <stdio.h>
 #include "trees/bst.h"
+#include "trees/avl.h"
 
 
 int main() {
-    BinarySearchTree tree = BSTCreate();
+    AVLTree tree = AVLCreate();
 
-    BSTPrintList(tree, BST_TRAVERSAL_IN, BST_LEFT);
+    // Árvore A
+    printf("\nARVORE A\n\n");
+    tree = AVLCreate();
+    AVLInsertOrdered(&tree, 12);
+    AVLInsertOrdered(&tree, 8);
+    AVLInsertOrdered(&tree, 20);
+    AVLInsertOrdered(&tree, 4);
+    AVLInsertOrdered(&tree, 10);
+    AVLInsertOrdered(&tree, 18);
+    AVLInsertOrdered(&tree, 26);
+    AVLInsertOrdered(&tree, 2);
+    AVLInsertOrdered(&tree, 6);
+    AVLInsertOrdered(&tree, 9);
+    AVLInsertOrdered(&tree, 11);
+    AVLInsertOrdered(&tree, 14);
+    AVLInsertOrdered(&tree, 19);
+    AVLInsertOrdered(&tree, 22);
+    AVLInsertOrdered(&tree, 28);
+    AVLDraw(tree);
+    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    AVLEmpty(&tree);
 
-    BSTInsertOrdered(&tree, 5); //       5        |
-    BSTInsertOrdered(&tree, 3); //     /   \      |
-    BSTInsertOrdered(&tree, 7); //    3     7     |
-    BSTInsertOrdered(&tree, 2); //   / \   / \    |
-    BSTInsertOrdered(&tree, 4); //  2   4 6   8   |
-    BSTInsertOrdered(&tree, 6); //                |
-    BSTInsertOrdered(&tree, 8); //                |
+    // Árvore B
+    printf("ARVORE B\n\n");
+    tree = AVLCreate();
+    AVLInsertOrdered(&tree, 12);
+    AVLInsertOrdered(&tree, 8);
+    AVLInsertOrdered(&tree, 20);
+    AVLInsertOrdered(&tree, 4);
+    AVLInsertOrdered(&tree, 10);
+    AVLInsertOrdered(&tree, 18);
+    AVLInsertOrdered(&tree, 26);
+    AVLInsertOrdered(&tree, 2);
+    AVLInsertOrdered(&tree, 6);
+    AVLInsertOrdered(&tree, 9);
+    AVLInsertOrdered(&tree, 14);
+    AVLInsertOrdered(&tree, 19);
+    AVLInsertOrdered(&tree, 22);
+    AVLInsertOrdered(&tree, 28);
+    AVLDraw(tree);
+    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    AVLEmpty(&tree);
 
-    BSTPrintList(tree, BST_TRAVERSAL_IN, BST_LEFT);
+    // Árvore C
+    tree = AVLCreate();
+    printf("ARVORE C\n\n");
+    AVLInsertOrdered(&tree, 12);
+    AVLInsertOrdered(&tree, 8);
+    AVLInsertOrdered(&tree, 20);
+    AVLInsertOrdered(&tree, 4);
+    AVLInsertOrdered(&tree, 10);
+    AVLInsertOrdered(&tree, 18);
+    AVLInsertOrdered(&tree, 2);
+    AVLInsertOrdered(&tree, 6);
+    AVLInsertOrdered(&tree, 11);
+    AVLInsertOrdered(&tree, 14);
+    AVLInsertOrdered(&tree, 19);
+    AVLDraw(tree);
+    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    AVLEmpty(&tree);
+
+    // Árvore D
+    printf("ARVORE D:\n\n");
+    tree = AVLCreate();
+    AVLInsertOrdered(&tree, 12);
+    AVLInsertOrdered(&tree, 20);
+    AVLInsertOrdered(&tree, 18);
+    AVLInsertOrdered(&tree, 14);
+    AVLInsertOrdered(&tree, 19);
+    AVLDraw(tree);
+    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    AVLEmpty(&tree);
 
     return 0;
 }

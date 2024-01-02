@@ -10,6 +10,7 @@ AVLNode* AVLNewNode(AVLData data) {
     new_node->data = data;
     new_node->left = NULL;
     new_node->right = NULL;
+    new_node->height = 1;
 
     return new_node;
 }
@@ -148,9 +149,10 @@ int AVLNodeHeight(AVLNode* node) {
     } else {
         return 1 + rheight;
     }
+    return node->height;
 }
 
-// Função interna recursiva para AVLCount
+// Função interna recursiva para AVLBalanceFactor()
 // Não exposta no header
 int _AVLBalanceFactor(AVLNode* node) {
     if (!node) {
@@ -196,6 +198,28 @@ void AVLPrintList(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order)
     printf("[ ");
     _AVLForEach(tree.root, traversal, order, _AVLPrintList_print);
     printf("]\n");
+}
+
+// Função interna recursiva para AVLDraw()
+// Não exposta no header
+void _AVLDraw(AVLNode* node, unsigned int level) {
+    if (node) {
+        for (int x = 1; x < level; x++) {
+            printf("|  ");
+        }
+
+        printf("+- %d \n", node->data);
+
+        if (node->left) 
+            _AVLDraw(node->left, level + 1);
+
+        if (node->right)
+            _AVLDraw(node->right, level + 1);
+    }
+}
+
+void AVLDraw(AVLTree tree) {
+    _AVLDraw(tree.root, 1);
 }
 
 int AVLRemove(AVLTree* tree, AVLData data) {
