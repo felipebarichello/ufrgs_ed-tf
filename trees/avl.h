@@ -55,7 +55,7 @@ AVLData AVLIsEmpty(AVLTree tree);
 // Usar essa função para inserir itens na árvore
 // Retorna o nodo do item inserido
 // Não verifica se `tree` é NULL
-AVLNode* AVLInsertOrdered(AVLTree* tree, AVLData data);
+AVLNode* AVLInsert(AVLTree* tree, AVLData data);
 
 // Buscar item na lista
 // Retorna o nodo do item encontrado ou NULL caso não encontre

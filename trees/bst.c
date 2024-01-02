@@ -26,7 +26,7 @@ BSTData BSTIsEmpty(BinarySearchTree tree) {
     return !tree.root;
 }
 
-BSTNode* BSTInsertOrdered(BinarySearchTree* tree, BSTData data) {
+BSTNode* BSTInsert(BinarySearchTree* tree, BSTData data) {
     if (BSTIsEmpty(*tree)) {
         tree->root = BSTNewNode(data);
         return tree->root;

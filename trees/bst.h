@@ -51,7 +51,7 @@ BSTData BSTIsEmpty(BinarySearchTree tree);
 // Usar essa função para inserir itens na árvore
 // Retorna o nodo do item inserido
 // Não verifica se `tree` é NULL
-BSTNode* BSTInsertOrdered(BinarySearchTree* tree, BSTData data);
+BSTNode* BSTInsert(BinarySearchTree* tree, BSTData data);
 
 // Buscar item na lista
 // Retorna o nodo do item encontrado ou NULL caso não encontre

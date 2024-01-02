@@ -27,7 +27,7 @@ AVLData AVLIsEmpty(AVLTree tree) {
     return !tree.root;
 }
 
-AVLNode* AVLInsertOrdered(AVLTree* tree, AVLData data) {
+AVLNode* AVLInsert(AVLTree* tree, AVLData data) {
     if (AVLIsEmpty(*tree)) {
         tree->root = AVLNewNode(data);
         return tree->root;
