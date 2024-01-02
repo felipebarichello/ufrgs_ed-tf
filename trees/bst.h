@@ -3,8 +3,10 @@
 #pragma once
 
 
+// Tipo concreto de dado armazenado na árvore
 typedef int BSTData;
 
+// Nodo da árvore binária
 typedef struct BSTNode {
     BSTData data;
     struct BSTNode* left;
