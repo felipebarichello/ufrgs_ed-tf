@@ -51,6 +51,7 @@ AVLNode* AVLInsert(AVLTree* tree, AVLData data) {
 
             current_node = current_node->right;
         } else {
+            // Valor repetido. Não inserir.
             return NULL;
         }
     }
