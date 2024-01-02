@@ -187,14 +187,14 @@ int AVLNodeBalanceFactor(AVLNode* node) {
 
 // Função interna para AVLPrintList()
 // Não exposta no header
-int _AVLPrintNode_print(AVLNode* node) {
+int _AVLPrintList_print(AVLNode* node) {
     printf("%d ", node->data);
     return 0;
 }
 
 void AVLPrintList(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order) {
     printf("[ ");
-    _AVLForEach(tree.root, traversal, order, _AVLPrintNode_print);
+    _AVLForEach(tree.root, traversal, order, _AVLPrintList_print);
     printf("]\n");
 }
 

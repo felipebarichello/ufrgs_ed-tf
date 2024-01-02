@@ -186,14 +186,14 @@ int BSTNodeBalanceFactor(BSTNode* node) {
 
 // Função interna para BSTPrintList()
 // Não exposta no header
-int _BSTPrintNode_print(BSTNode* node) {
+int _BSTPrintList_print(BSTNode* node) {
     printf("%d ", node->data);
     return 0;
 }
 
 void BSTPrintList(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order) {
     printf("[ ");
-    _BSTForEach(tree.root, traversal, order, _BSTPrintNode_print);
+    _BSTForEach(tree.root, traversal, order, _BSTPrintList_print);
     printf("]\n");
 }
 
