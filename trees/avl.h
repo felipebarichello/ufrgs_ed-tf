@@ -8,6 +8,7 @@ typedef int AVLData;
 
 // Nodo da árvore binária
 // `height` é a altura do nodo.
+// É mais eficiente armazenar a altura do nodo que calcular a altura cada vez.
 // É um `unsigned short` porque essa árvore força uma altura baixa. 
 typedef struct AVLNode {
     AVLData data;
