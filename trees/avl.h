@@ -88,6 +88,10 @@ int AVLTreeBalanceFactor(AVLTree tree);
 // Calcular fator de balanceamento do nodo
 int AVLNodeBalanceFactor(AVLNode* node);
 
+// Verificar se o nodo está balanceado
+// Retorna 1 se o nodo está balanceado, 0 caso contrário
+int AVLIsNodeBalanced(AVLNode* node);
+
 // Imprimir árvore
 // Encapsulamento sobre AVLForEach() para imprimir a árvore
 void AVLPrintList(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order);

@@ -27,6 +27,30 @@ avldata_t AVLIsEmpty(AVLTree tree) {
     return !tree.root;
 }
 
+void _AVLRotateRight(AVLNode** subtree_root) {
+    AVLNode* old_root = *subtree_root;
+    AVLNode* new_root = old_root->left;
+    
+    *subtree_root = new_root;
+    old_root->left = new_root->right;
+    new_root->right = old_root;
+    
+    AVLNodeUpdateHeight(old_root);
+    AVLNodeUpdateHeight(new_root);
+}
+
+void _AVLRotateLeft(AVLNode** subtree_root) {
+    AVLNode* old_root = *subtree_root;
+    AVLNode* new_root = old_root->right;
+    
+    *subtree_root = new_root;
+    old_root->right = new_root->left;
+    new_root->left = old_root;
+
+    AVLNodeUpdateHeight(old_root);
+    AVLNodeUpdateHeight(new_root);
+}
+
 // Função interna recursiva para AVLInsert()
 // Não exposta no header
 // [PENDENTE] Balanceamento
@@ -53,6 +77,38 @@ AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
     }
 
     AVLNode* ret = _AVLInsert(*relevant_child, data);
+
+
+    /* Balancear o filho */
+    // É o pai quem deve balancear o filho para poder tratar situações em que ele deve trocar o filho
+    // Note que `grandchild` é o neto do pai, e portanto o filho da raíz da subárvore
+
+    int balance_factor = AVLNodeBalanceFactor(*relevant_child);
+    
+    if (balance_factor > 1) {
+        // A subárvore esquerda é mais alta
+        AVLNode* grandchild = (*relevant_child)->left;
+
+        if (data > grandchild->data) {
+            // Rotação dupla
+            _AVLRotateLeft(&grandchild);
+        }
+
+        _AVLRotateRight(relevant_child);
+    } else if (balance_factor < -1) {
+        // A subárvore direita é mais alta
+        AVLNode* grandchild = (*relevant_child)->right;
+
+        if (data < grandchild->data) {
+            // Rotação dupla
+            _AVLRotateRight(&grandchild);
+        }
+
+        _AVLRotateLeft(relevant_child);
+    }
+
+
+    /* Atualizar própria altura */
 
     if (ret) {
         AVLNodeUpdateHeight(node);
@@ -202,6 +258,11 @@ int AVLNodeBalanceFactor(AVLNode* node) {
     return lheight - rheight;
 }
 
+int AVLIsNodeBalanced(AVLNode* node) {
+    avlheight_t balance_factor = AVLNodeBalanceFactor(node);
+    return balance_factor <= 1 && balance_factor >= -1;
+}
+
 // Função interna para AVLPrintList()
 // Não exposta no header
 int _AVLPrintList_print(AVLNode* node) {
@@ -223,7 +284,7 @@ void _AVLDraw(AVLNode* node, unsigned int level) {
             printf("|  ");
         }
 
-        printf("+- %d \n", node->height);
+        printf("+- %d (%d) \n", node->data, node->height);
 
         if (node->left) 
             _AVLDraw(node->left, level + 1);
