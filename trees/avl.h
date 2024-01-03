@@ -76,7 +76,7 @@ int AVLForEach(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order, in
 // Contar quantos itens a árvore possui
 int AVLCount(AVLTree tree);
 
-// Calcular altura do nodo
+// Retorna a altura do nodo
 avlheight_t AVLNodeHeight(AVLNode* node);
 
 // Atualizar altura do nodo
