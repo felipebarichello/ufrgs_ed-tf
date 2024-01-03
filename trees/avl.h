@@ -4,17 +4,19 @@
 
 
 // Tipo concreto de dado armazenado na árvore
-typedef int AVLData;
+typedef int avldata_t;
+
+// Tipo concreto da altura da árvore
+typedef unsigned short avlheight_t;
 
 // Nodo da árvore binária
 // `height` é a altura do nodo.
 // É mais eficiente armazenar a altura do nodo que calcular a altura cada vez.
-// É um `unsigned short` porque essa árvore força uma altura baixa. 
 typedef struct AVLNode {
-    AVLData data;
+    avldata_t data;
+    avlheight_t height;
     struct AVLNode* left;
     struct AVLNode* right;
-    unsigned short height;
 } AVLNode;
 
 // A árvore binária é apenas um encapsulamento de um nodo que pode agir como raíz
@@ -40,7 +42,7 @@ enum AVLTraversal {
 
 // Criar e alocar um novo nodo sem filhos na heap
 // Retorna o nodo criado
-AVLNode* AVLNewNode(AVLData data);
+AVLNode* AVLNewNode(avldata_t data);
 
 // Criar uma árvore vazia
 AVLTree AVLCreate();
@@ -49,17 +51,17 @@ AVLTree AVLCreate();
 AVLTree AVLFromNode(AVLNode* root);
 
 // Verificar se a árvore binária está vazia
-AVLData AVLIsEmpty(AVLTree tree);
+avldata_t AVLIsEmpty(AVLTree tree);
 
 // Inserir item na lista em ordem crescente
 // Usar essa função para inserir itens na árvore
 // Retorna o nodo do item inserido
 // Não verifica se `tree` é NULL
-AVLNode* AVLInsert(AVLTree* tree, AVLData data);
+AVLNode* AVLInsert(AVLTree* tree, avldata_t data);
 
 // Buscar item na lista
 // Retorna o nodo do item encontrado ou NULL caso não encontre
-AVLNode* AVLSearch(AVLTree tree, AVLData data);
+AVLNode* AVLSearch(AVLTree tree, avldata_t data);
 
 // Caminhar por todos os itens da árvore, executando a função `operation`
 // `operation` deve retornar 0 para continuar o caminhamento ou 1 para parar
@@ -67,6 +69,7 @@ AVLNode* AVLSearch(AVLTree tree, AVLData data);
 // Retorna 1 se o caminhamento foi interrompido pela função `operation` e 0 caso contrário
 // Não verifica se `tree` é NULL
 // Cuidado para não remover a raíz da árvore durante o caminhamento
+// Cuidado com o balanceamento da árvore
 // Antes de usar, verifique se não há outras funções que possam fazer o que você quer, pois ela não é muito eficiente
 int AVLForEach(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order, int (*operation)(AVLNode* node));
 
@@ -74,7 +77,10 @@ int AVLForEach(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order, in
 int AVLCount(AVLTree tree);
 
 // Calcular altura do nodo
-int AVLNodeHeight(AVLNode* node);
+avlheight_t AVLNodeHeight(AVLNode* node);
+
+// Atualizar altura do nodo
+avlheight_t AVLUpdateHeight(AVLNode* node);
 
 // Calcular fator de balanceamento da árvore
 int AVLBalanceFactor(AVLTree tree);
@@ -91,7 +97,7 @@ void AVLDraw(AVLTree tree);
 
 // Romover item da lista
 // Retorna 1 se encontrou o produto, 0 caso contrário
-int AVLRemove(AVLTree* tree, AVLData data);
+int AVLRemove(AVLTree* tree, avldata_t data);
 
 // Esvazia a árvore
 void AVLEmpty(AVLTree* tree);

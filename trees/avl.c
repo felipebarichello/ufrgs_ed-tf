@@ -5,7 +5,7 @@
 #include "avl.h"
 
 
-AVLNode* AVLNewNode(AVLData data) {
+AVLNode* AVLNewNode(avldata_t data) {
     AVLNode* new_node = (AVLNode*) malloc(sizeof(AVLNode));
     new_node->data = data;
     new_node->left = NULL;
@@ -23,41 +23,61 @@ AVLTree AVLFromNode(AVLNode* root) {
     return (AVLTree) { root };
 }
 
-AVLData AVLIsEmpty(AVLTree tree) {
+avldata_t AVLIsEmpty(AVLTree tree) {
     return !tree.root;
 }
 
-AVLNode* AVLInsert(AVLTree* tree, AVLData data) {
+// Função interna recursiva para AVLInsert()
+// Não exposta no header
+// [PENDENTE] Balanceamento
+AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
+    if (data < node->data) {
+        if (!node->left) {
+            AVLNode* new_node = AVLNewNode(data);
+            node->left = new_node;
+            AVLUpdateHeight(node);
+            return new_node;
+        }
+
+        AVLNode* ret = _AVLInsert(node->left, data);
+
+        if (ret) {
+            AVLUpdateHeight(node);
+        }
+
+        return ret;
+    } else if (data > node->data) {
+        if (!node->right) {
+            AVLNode* new_node = AVLNewNode(data);
+            node->right = new_node;
+            AVLUpdateHeight(node);
+
+            return new_node;
+        }
+
+        AVLNode* ret = _AVLInsert(node->right, data);
+
+        if (ret) {
+            AVLUpdateHeight(node);
+        }
+
+        return ret;
+    } else {
+        // Valor repetido. Não inserir.
+        return NULL;
+    }
+}
+
+AVLNode* AVLInsert(AVLTree* tree, avldata_t data) {
     if (AVLIsEmpty(*tree)) {
         tree->root = AVLNewNode(data);
         return tree->root;
     }
 
-    AVLNode* current_node = tree->root;
-
-    for (;;) {
-        if (data < current_node->data) {
-            if (!current_node->left) {
-                current_node->left = AVLNewNode(data);
-                return current_node->left;
-            }
-
-            current_node = current_node->left;
-        } else if (data > current_node->data) {
-            if (!current_node->right) {
-                current_node->right = AVLNewNode(data);
-                return current_node->right;
-            }
-
-            current_node = current_node->right;
-        } else {
-            // Valor repetido. Não inserir.
-            return NULL;
-        }
-    }
+    return _AVLInsert(tree->root, data);
 }
 
-AVLNode* AVLSearch(AVLTree tree, AVLData data) {
+AVLNode* AVLSearch(AVLTree tree, avldata_t data) {
     AVLNode* current_node = tree.root;
 
     while (current_node) {
@@ -137,19 +157,20 @@ int AVLCount(AVLTree tree) {
     _AVLCount(tree.root);
 }
 
-int AVLNodeHeight(AVLNode* node) {
-    if (!node) {
-        return 0;
-    }
+avlheight_t AVLNodeHeight(AVLNode* node) {
+    return node->height;
+}
 
-    int lheight = AVLNodeHeight(node->left);
-    int rheight = AVLNodeHeight(node->right);
+avlheight_t AVLUpdateHeight(AVLNode* node) {
+    avlheight_t lheight = node->left  ? AVLNodeHeight(node->left)  : 0;
+    avlheight_t rheight = node->right ? AVLNodeHeight(node->right) : 0;
 
     if (lheight > rheight) {
-        return 1 + lheight;
+        node->height = lheight + 1;
     } else {
-        return 1 + rheight;
+        node->height = rheight + 1;
     }
+
     return node->height;
 }
 
@@ -183,8 +204,8 @@ int AVLBalanceFactor(AVLTree tree) {
 }
 
 int AVLNodeBalanceFactor(AVLNode* node) {
-    int lheight = AVLNodeHeight(node->left);
-    int rheight = AVLNodeHeight(node->right);
+    int lheight = node->left  ? AVLNodeHeight(node->left)  : 0;
+    int rheight = node->right ? AVLNodeHeight(node->right) : 0;
     return lheight - rheight;
 }
 
@@ -209,7 +230,7 @@ void _AVLDraw(AVLNode* node, unsigned int level) {
             printf("|  ");
         }
 
-        printf("+- %d \n", node->data);
+        printf("+- %d \n", node->height);
 
         if (node->left) 
             _AVLDraw(node->left, level + 1);
@@ -223,7 +244,9 @@ void AVLDraw(AVLTree tree) {
     _AVLDraw(tree.root, 1);
 }
 
-int AVLRemove(AVLTree* tree, AVLData data) {
+// [PENDENTE] Balanceamento
+// [PENDENTE] Altura
+int AVLRemove(AVLTree* tree, avldata_t data) {
     if (AVLIsEmpty(*tree)) {
         return 0;
     }
