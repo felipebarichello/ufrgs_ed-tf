@@ -35,14 +35,14 @@ AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
         if (!node->left) {
             AVLNode* new_node = AVLNewNode(data);
             node->left = new_node;
-            AVLUpdateHeight(node);
+            AVLNodeUpdateHeight(node);
             return new_node;
         }
 
         AVLNode* ret = _AVLInsert(node->left, data);
 
         if (ret) {
-            AVLUpdateHeight(node);
+            AVLNodeUpdateHeight(node);
         }
 
         return ret;
@@ -50,7 +50,7 @@ AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
         if (!node->right) {
             AVLNode* new_node = AVLNewNode(data);
             node->right = new_node;
-            AVLUpdateHeight(node);
+            AVLNodeUpdateHeight(node);
 
             return new_node;
         }
@@ -58,7 +58,7 @@ AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
         AVLNode* ret = _AVLInsert(node->right, data);
 
         if (ret) {
-            AVLUpdateHeight(node);
+            AVLNodeUpdateHeight(node);
         }
 
         return ret;
@@ -161,7 +161,7 @@ avlheight_t AVLNodeHeight(AVLNode* node) {
     return node->height;
 }
 
-avlheight_t AVLUpdateHeight(AVLNode* node) {
+avlheight_t AVLNodeUpdateHeight(AVLNode* node) {
     avlheight_t lheight = node->left  ? AVLNodeHeight(node->left)  : 0;
     avlheight_t rheight = node->right ? AVLNodeHeight(node->right) : 0;
 

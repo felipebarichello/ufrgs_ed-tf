@@ -80,7 +80,7 @@ int AVLCount(AVLTree tree);
 avlheight_t AVLNodeHeight(AVLNode* node);
 
 // Atualizar altura do nodo
-avlheight_t AVLUpdateHeight(AVLNode* node);
+avlheight_t AVLNodeUpdateHeight(AVLNode* node);
 
 // Calcular fator de balanceamento da árvore
 int AVLBalanceFactor(AVLTree tree);
