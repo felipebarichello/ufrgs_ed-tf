@@ -31,41 +31,34 @@ avldata_t AVLIsEmpty(AVLTree tree) {
 // Não exposta no header
 // [PENDENTE] Balanceamento
 AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
+    // `&node->left` ou `&node->right`, dependendo do valor de `data`
+    AVLNode** relevant_child;
+
     if (data < node->data) {
-        if (!node->left) {
-            AVLNode* new_node = AVLNewNode(data);
-            node->left = new_node;
-            AVLNodeUpdateHeight(node);
-            return new_node;
-        }
-
-        AVLNode* ret = _AVLInsert(node->left, data);
-
-        if (ret) {
-            AVLNodeUpdateHeight(node);
-        }
-
-        return ret;
+        relevant_child = &node->left;
     } else if (data > node->data) {
-        if (!node->right) {
-            AVLNode* new_node = AVLNewNode(data);
-            node->right = new_node;
-            AVLNodeUpdateHeight(node);
-
-            return new_node;
-        }
-
-        AVLNode* ret = _AVLInsert(node->right, data);
-
-        if (ret) {
-            AVLNodeUpdateHeight(node);
-        }
-
-        return ret;
+        relevant_child = &node->right;
     } else {
         // Valor repetido. Não inserir.
         return NULL;
     }
+
+    if (!*relevant_child) {
+        AVLNode* new_node = AVLNewNode(data);
+        *relevant_child = new_node;
+        AVLNodeUpdateHeight(node);
+
+        // Não é necessário balancear, pois é impossível o nodo pai do novo nodo estar desbalanceado.
+        return new_node;
+    }
+
+    AVLNode* ret = _AVLInsert(*relevant_child, data);
+
+    if (ret) {
+        AVLNodeUpdateHeight(node);
+    }
+
+    return ret;
 }
 
 AVLNode* AVLInsert(AVLTree* tree, avldata_t data) {
