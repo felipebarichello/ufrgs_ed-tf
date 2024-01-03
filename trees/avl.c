@@ -167,16 +167,16 @@ avlheight_t AVLNodeUpdateHeight(AVLNode* node) {
     return node->height;
 }
 
-// Função interna recursiva para AVLBalanceFactor()
+// Função interna recursiva para AVLTreeBalanceFactor()
 // Não exposta no header
-int _AVLBalanceFactor(AVLNode* node) {
+int _AVLTreeBalanceFactor(AVLNode* node) {
     if (!node) {
         return 0;
     }
 
     int selfbalance = abs(AVLNodeBalanceFactor(node));
-    int lbalance = _AVLBalanceFactor(node->left);
-    int rbalance = _AVLBalanceFactor(node->right);
+    int lbalance = _AVLTreeBalanceFactor(node->left);
+    int rbalance = _AVLTreeBalanceFactor(node->right);
 
     int higher;
 
@@ -192,8 +192,8 @@ int _AVLBalanceFactor(AVLNode* node) {
     }
 }
 
-int AVLBalanceFactor(AVLTree tree) {
-    return _AVLBalanceFactor(tree.root);
+int AVLTreeBalanceFactor(AVLTree tree) {
+    return _AVLTreeBalanceFactor(tree.root);
 }
 
 int AVLNodeBalanceFactor(AVLNode* node) {

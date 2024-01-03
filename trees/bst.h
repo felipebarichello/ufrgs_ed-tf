@@ -73,7 +73,7 @@ int BSTCount(BinarySearchTree tree);
 int BSTNodeHeight(BSTNode* node);
 
 // Calcular fator de balanceamento da árvore
-int BSTBalanceFactor(BinarySearchTree tree);
+int BSTTreeBalanceFactor(BinarySearchTree tree);
 
 // Calcular fator de balanceamento do nodo
 int BSTNodeBalanceFactor(BSTNode* node);

@@ -25,7 +25,7 @@ int main() {
     AVLInsert(&tree, 22);
     AVLInsert(&tree, 28);
     AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
     AVLEmpty(&tree);
 
     // Árvore B
@@ -46,7 +46,7 @@ int main() {
     AVLInsert(&tree, 22);
     AVLInsert(&tree, 28);
     AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
     AVLEmpty(&tree);
 
     // Árvore C
@@ -64,7 +64,7 @@ int main() {
     AVLInsert(&tree, 14);
     AVLInsert(&tree, 19);
     AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
     AVLEmpty(&tree);
 
     // Árvore D
@@ -76,7 +76,7 @@ int main() {
     AVLInsert(&tree, 14);
     AVLInsert(&tree, 19);
     AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLBalanceFactor(tree));
+    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
     AVLEmpty(&tree);
 
     return 0;

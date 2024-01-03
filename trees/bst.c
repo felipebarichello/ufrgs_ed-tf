@@ -150,16 +150,16 @@ int BSTNodeHeight(BSTNode* node) {
     }
 }
 
-// Função interna recursiva para BSTBalanceFactor()
+// Função interna recursiva para BSTTreeBalanceFactor()
 // Não exposta no header
-int _BSTBalanceFactor(BSTNode* node) {
+int _BSTTreeBalanceFactor(BSTNode* node) {
     if (!node) {
         return 0;
     }
 
     int selfbalance = abs(BSTNodeBalanceFactor(node));
-    int lbalance = _BSTBalanceFactor(node->left);
-    int rbalance = _BSTBalanceFactor(node->right);
+    int lbalance = _BSTTreeBalanceFactor(node->left);
+    int rbalance = _BSTTreeBalanceFactor(node->right);
 
     int higher;
 
@@ -175,8 +175,8 @@ int _BSTBalanceFactor(BSTNode* node) {
     }
 }
 
-int BSTBalanceFactor(BinarySearchTree tree) {
-    return _BSTBalanceFactor(tree.root);
+int BSTTreeBalanceFactor(BinarySearchTree tree) {
+    return _BSTTreeBalanceFactor(tree.root);
 }
 
 int BSTNodeBalanceFactor(BSTNode* node) {
