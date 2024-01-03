@@ -4,11 +4,11 @@
 
 
 // Tipo concreto de dado armazenado na árvore
-typedef int BSTData;
+typedef int bstdata_t;
 
 // Nodo da árvore binária
 typedef struct BSTNode {
-    BSTData data;
+    bstdata_t data;
     struct BSTNode* left;
     struct BSTNode* right;
 } BSTNode;
@@ -36,7 +36,7 @@ enum BSTTraversal {
 
 // Criar e alocar um novo nodo sem filhos na heap
 // Retorna o nodo criado
-BSTNode* BSTNewNode(BSTData data);
+BSTNode* BSTNewNode(bstdata_t data);
 
 // Criar uma árvore vazia
 BinarySearchTree BSTCreate();
@@ -45,17 +45,17 @@ BinarySearchTree BSTCreate();
 BinarySearchTree BSTFromNode(BSTNode* root);
 
 // Verificar se a árvore binária está vazia
-BSTData BSTIsEmpty(BinarySearchTree tree);
+bstdata_t BSTIsEmpty(BinarySearchTree tree);
 
 // Inserir item na lista em ordem crescente
 // Usar essa função para inserir itens na árvore
 // Retorna o nodo do item inserido
 // Não verifica se `tree` é NULL
-BSTNode* BSTInsert(BinarySearchTree* tree, BSTData data);
+BSTNode* BSTInsert(BinarySearchTree* tree, bstdata_t data);
 
 // Buscar item na lista
 // Retorna o nodo do item encontrado ou NULL caso não encontre
-BSTNode* BSTSearch(BinarySearchTree tree, BSTData data);
+BSTNode* BSTSearch(BinarySearchTree tree, bstdata_t data);
 
 // Caminhar por todos os itens da árvore, executando a função `operation`
 // `operation` deve retornar 0 para continuar o caminhamento ou 1 para parar
@@ -87,7 +87,7 @@ void BSTDraw(BinarySearchTree tree);
 
 // Romover item da lista
 // Retorna 1 se encontrou o produto, 0 caso contrário
-int BSTRemove(BinarySearchTree* tree, BSTData data);
+int BSTRemove(BinarySearchTree* tree, bstdata_t data);
 
 // Esvazia a árvore
 void BSTEmpty(BinarySearchTree* tree);

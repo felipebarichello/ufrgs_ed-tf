@@ -5,7 +5,7 @@
 #include "bst.h"
 
 
-BSTNode* BSTNewNode(BSTData data) {
+BSTNode* BSTNewNode(bstdata_t data) {
     BSTNode* new_node = (BSTNode*) malloc(sizeof(BSTNode));
     new_node->data = data;
     new_node->left = NULL;
@@ -22,11 +22,11 @@ BinarySearchTree BSTFromNode(BSTNode* root) {
     return (BinarySearchTree) { root };
 }
 
-BSTData BSTIsEmpty(BinarySearchTree tree) {
+bstdata_t BSTIsEmpty(BinarySearchTree tree) {
     return !tree.root;
 }
 
-BSTNode* BSTInsert(BinarySearchTree* tree, BSTData data) {
+BSTNode* BSTInsert(BinarySearchTree* tree, bstdata_t data) {
     if (BSTIsEmpty(*tree)) {
         tree->root = BSTNewNode(data);
         return tree->root;
@@ -56,7 +56,7 @@ BSTNode* BSTInsert(BinarySearchTree* tree, BSTData data) {
     }
 }
 
-BSTNode* BSTSearch(BinarySearchTree tree, BSTData data) {
+BSTNode* BSTSearch(BinarySearchTree tree, bstdata_t data) {
     BSTNode* current_node = tree.root;
 
     while (current_node) {
@@ -220,7 +220,7 @@ void BSTDraw(BinarySearchTree tree) {
     _BSTDraw(tree.root, 1);
 }
 
-int BSTRemove(BinarySearchTree* tree, BSTData data) {
+int BSTRemove(BinarySearchTree* tree, bstdata_t data) {
     if (BSTIsEmpty(*tree)) {
         return 0;
     }
