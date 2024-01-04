@@ -80,7 +80,6 @@ void _AVLBalanceAfterInsertion(AVLNode** subtree, avldata_t data) {
         }
 
         _AVLRotateLeft(subtree);
-    } else {
     }
 }
 
