@@ -27,6 +27,7 @@ avldata_t AVLIsEmpty(AVLTree tree) {
     return !tree.root;
 }
 
+// Função interna. Não exposta no header.
 void _AVLRotateRight(AVLNode** subtree_root) {
     AVLNode* old_root = *subtree_root;
     AVLNode* new_root = old_root->left;
@@ -39,6 +40,7 @@ void _AVLRotateRight(AVLNode** subtree_root) {
     AVLNodeUpdateHeight(new_root);
 }
 
+// Função interna. Não exposta no header.
 void _AVLRotateLeft(AVLNode** subtree_root) {
     AVLNode* old_root = *subtree_root;
     AVLNode* new_root = old_root->right;
@@ -49,6 +51,37 @@ void _AVLRotateLeft(AVLNode** subtree_root) {
 
     AVLNodeUpdateHeight(old_root);
     AVLNodeUpdateHeight(new_root);
+}
+
+// Balancear a subárvore após inserção
+// Pode modificar o ponteiro `subtree` para apontar para outro nodo
+// Retorna 1 se houve balanceamento, 0 caso contrário
+// Função interna. Não exposta no header.
+void _AVLBalanceAfterInsertion(AVLNode** subtree, avldata_t data) {
+    int balance_factor = AVLNodeBalanceFactor(*subtree);
+    
+    if (balance_factor > 1) {
+        // A subárvore esquerda é mais alta
+        AVLNode** tallest_child_slot = &(*subtree)->left;
+
+        if (data > (*tallest_child_slot)->data) {
+            // Rotação dupla
+            _AVLRotateLeft(tallest_child_slot);
+        }
+
+        _AVLRotateRight(subtree);
+    } else if (balance_factor < -1) {
+        // A subárvore direita é mais alta
+        AVLNode** tallest_child_slot = &(*subtree)->right;
+        
+        if (data < (*tallest_child_slot)->data) {
+            // Rotação dupla
+            _AVLRotateRight(tallest_child_slot);
+        }
+
+        _AVLRotateLeft(subtree);
+    } else {
+    }
 }
 
 // Função interna recursiva para AVLInsert()
@@ -78,38 +111,11 @@ AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
 
     AVLNode* ret = _AVLInsert(*relevant_child, data);
 
-
-    /* Balancear o filho */
+    // Balancear o filho
     // É o pai quem deve balancear o filho para poder tratar situações em que ele deve trocar o filho
-    // Note que `grandchild` é o neto do pai, e portanto o filho da raíz da subárvore
+    _AVLBalanceAfterInsertion(relevant_child, data);
 
-    int balance_factor = AVLNodeBalanceFactor(*relevant_child);
-    
-    if (balance_factor > 1) {
-        // A subárvore esquerda é mais alta
-        AVLNode* grandchild = (*relevant_child)->left;
-
-        if (data > grandchild->data) {
-            // Rotação dupla
-            _AVLRotateLeft(&grandchild);
-        }
-
-        _AVLRotateRight(relevant_child);
-    } else if (balance_factor < -1) {
-        // A subárvore direita é mais alta
-        AVLNode* grandchild = (*relevant_child)->right;
-
-        if (data < grandchild->data) {
-            // Rotação dupla
-            _AVLRotateRight(&grandchild);
-        }
-
-        _AVLRotateLeft(relevant_child);
-    }
-
-
-    /* Atualizar própria altura */
-
+    // Atualizar própria altura
     if (ret) {
         AVLNodeUpdateHeight(node);
     }
@@ -123,7 +129,13 @@ AVLNode* AVLInsert(AVLTree* tree, avldata_t data) {
         return tree->root;
     }
 
-    return _AVLInsert(tree->root, data);
+    // Inserir recursivamente
+    AVLNode* new_node = _AVLInsert(tree->root, data);
+
+    // Balancear a raiz
+    _AVLBalanceAfterInsertion(&tree->root, data);
+
+    return new_node;
 }
 
 AVLNode* AVLSearch(AVLTree tree, avldata_t data) {
@@ -284,7 +296,7 @@ void _AVLDraw(AVLNode* node, unsigned int level) {
             printf("|  ");
         }
 
-        printf("+- %d (%d) \n", node->data, node->height);
+        printf("+- %d\n", node->data);
 
         if (node->left) 
             _AVLDraw(node->left, level + 1);
