@@ -86,7 +86,6 @@ void _AVLBalanceAfterInsertion(AVLNode** subtree, avldata_t data) {
 
 // Função interna recursiva para AVLInsert()
 // Não exposta no header
-// [PENDENTE] Balanceamento
 AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
     // `&node->left` ou `&node->right`, dependendo do valor de `data`
     AVLNode** relevant_child;
@@ -311,7 +310,7 @@ void AVLDraw(AVLTree tree) {
 }
 
 // [PENDENTE] Balanceamento
-// [PENDENTE] Altura
+// [PENDENTE] Atualizar altura dos nodos
 int AVLRemove(AVLTree* tree, avldata_t data) {
     if (AVLIsEmpty(*tree)) {
         return 0;
