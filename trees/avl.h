@@ -99,9 +99,5 @@ void AVLPrintList(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order)
 // Imprimir a árvore em um formato visual
 void AVLDraw(AVLTree tree);
 
-// Romover item da lista
-// Retorna 1 se encontrou o produto, 0 caso contrário
-int AVLRemove(AVLTree* tree, avldata_t data);
-
 // Esvazia a árvore
 void AVLEmpty(AVLTree* tree);
