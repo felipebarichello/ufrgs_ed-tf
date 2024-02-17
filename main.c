@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "trees/bst.h"
 #include "trees/avl.h"
 
+
+void lower_string (char *string_buffer);
 
 int main() {
     AVLTree tree = AVLCreate();
@@ -81,3 +84,18 @@ int main() {
 
     return 0;
 }
+
+void lower_string (char *string_buffer) { // TODO: não testado
+    int i=0;
+    char c;
+
+    c = string_buffer[i];
+    while (c != '\0') {
+        tolower(c);
+        string_buffer[i] = c;
+
+        i++;
+        c = string_buffer[i];
+    }
+}
+
