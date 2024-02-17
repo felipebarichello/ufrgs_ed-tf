@@ -1,101 +1,29 @@
 #include <stdio.h>
 #include <ctype.h>
-#include "trees/bst.h"
-#include "trees/avl.h"
+#include "libs/bst.h"
+#include "libs/avl.h"
+#include "libs/auxiliary.h"
+#include "libs/food.h"
+
+#define BUFFER_SIZE 200 // Tamanho do buffer de arquivo
 
 
-void lower_string (char *string_buffer);
+char fbuffer[BUFFER_SIZE]; // Buffer para ler linhas de arquivos
 
 int main() {
-    AVLTree tree = AVLCreate();
+    FILE* fhandle;
 
-    // Árvore A
-    printf("\nARVORE A\n\n");
-    tree = AVLCreate();
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 8);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 4);
-    AVLInsert(&tree, 10);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 26);
-    AVLInsert(&tree, 2);
-    AVLInsert(&tree, 6);
-    AVLInsert(&tree, 9);
-    AVLInsert(&tree, 11);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLInsert(&tree, 22);
-    AVLInsert(&tree, 28);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
+    // Abrir tabela de calorias
+    fhandle = fopen("1000Shuffled.csv", "r");
 
-    // Árvore B
-    printf("ARVORE B\n\n");
-    tree = AVLCreate();
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 8);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 4);
-    AVLInsert(&tree, 10);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 26);
-    AVLInsert(&tree, 2);
-    AVLInsert(&tree, 6);
-    AVLInsert(&tree, 9);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLInsert(&tree, 22);
-    AVLInsert(&tree, 28);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
+    if (!fhandle) {
+        printf("ERRO: Nao foi possivel abrir a tabela de calorias\n");
+        return 1;
+    }
 
-    // Árvore C
-    tree = AVLCreate();
-    printf("ARVORE C\n\n");
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 8);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 4);
-    AVLInsert(&tree, 10);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 2);
-    AVLInsert(&tree, 6);
-    AVLInsert(&tree, 11);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
-
-    // Árvore D
-    printf("ARVORE D:\n\n");
-    tree = AVLCreate();
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
+    // Construir ABP com os dados da tabela de calorias
+    // BinarySearchTree tree = BSTCreate();
 
     return 0;
-}
-
-void lower_string (char *string_buffer) { // TODO: não testado
-    int i=0;
-    char c;
-
-    c = string_buffer[i];
-    while (c != '\0') {
-        tolower(c);
-        string_buffer[i] = c;
-
-        i++;
-        c = string_buffer[i];
-    }
 }
 

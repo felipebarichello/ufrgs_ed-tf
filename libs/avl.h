@@ -2,7 +2,6 @@
 
 #pragma once
 
-
 // Tipo concreto de dado armazenado na árvore
 typedef int avldata_t;
 
