@@ -3,89 +3,44 @@
 #include "trees/bst.h"
 #include "trees/avl.h"
 
+#define BUFFER_SIZE 200
+
+int comp = 0;
+
 
 void lower_string (char *string_buffer);
+AVLNode* consulta(AVLNode *a, char *chave);
 
 int main() {
-    AVLTree tree = AVLCreate();
+    FILE *fhandle;
+    Food food_buf;
+    AVLTree tree_1;
+    AVLNode *node_buf;
+    int status, calories, grams, total_calories=0;
 
-    // Árvore A
-    printf("\nARVORE A\n\n");
-    tree = AVLCreate();
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 8);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 4);
-    AVLInsert(&tree, 10);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 26);
-    AVLInsert(&tree, 2);
-    AVLInsert(&tree, 6);
-    AVLInsert(&tree, 9);
-    AVLInsert(&tree, 11);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLInsert(&tree, 22);
-    AVLInsert(&tree, 28);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
+    // Abertura do arquivo de alimentos ingeridos
+    fhandle = fopen("day1.csv", r);
 
-    // Árvore B
-    printf("ARVORE B\n\n");
-    tree = AVLCreate();
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 8);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 4);
-    AVLInsert(&tree, 10);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 26);
-    AVLInsert(&tree, 2);
-    AVLInsert(&tree, 6);
-    AVLInsert(&tree, 9);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLInsert(&tree, 22);
-    AVLInsert(&tree, 28);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
-
-    // Árvore C
-    tree = AVLCreate();
-    printf("ARVORE C\n\n");
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 8);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 4);
-    AVLInsert(&tree, 10);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 2);
-    AVLInsert(&tree, 6);
-    AVLInsert(&tree, 11);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
-
-    // Árvore D
-    printf("ARVORE D:\n\n");
-    tree = AVLCreate();
-    AVLInsert(&tree, 12);
-    AVLInsert(&tree, 20);
-    AVLInsert(&tree, 18);
-    AVLInsert(&tree, 14);
-    AVLInsert(&tree, 19);
-    AVLDraw(tree);
-    printf("\nFator de balanceamento: %d\n\n\n", AVLTreeBalanceFactor(tree));
-    AVLEmpty(&tree);
+    if (fhandle) {
+        while ((status = read_next_food(fhandle, &food_buf, BUFFER_SIZE)) == FOOD_READ_OK) {
+            status = read_next_food(fhandle, &food_buf, BUFFER_SIZE);
+            if (status != FOOD_READ_ERROR) {
+                grams = food_buf->value;
+                node_buf = consulta(tree_1, food_buf.name);
+                calories = node->data.value;
+                total_calories += grams*calories;
+            } else {
+                printf(“Linha com valores inválidos.”);
+                return 1;
+            }
+        }
+    } else 
+        printf(“Erro na abertura do arquivo.”);
 
     return 0;
 }
 
-void lower_string (char *string_buffer) { // TODO: não testado
+void lower_string (char *string_buffer) {
     int i=0;
     char c;
 
@@ -99,3 +54,20 @@ void lower_string (char *string_buffer) { // TODO: não testado
     }
 }
 
+AVLNode* consulta(AVLNode *a, char *chave) {
+
+    while (a != NULL){
+        comp++;
+        if (!strcmp(a->data.name, chave)){
+            return a;
+        }
+        else {
+            if (strcmp(a->data.name, chave) > 0)
+                a = a->left;
+            else
+                a = a->right;
+        }
+    }
+
+    return NULL;
+}
