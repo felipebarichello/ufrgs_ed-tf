@@ -6,11 +6,10 @@
 #include "food.h"
 
 
-// Tipo concreto de dado armazenado na árvore
-typedef Food avldata_t;
-
-// Tipo concreto da altura da árvore
-typedef unsigned short avlheight_t;
+// Aliases para tipos utilizados pela árvore
+typedef Food avldata_t; // Tipo concreto de dado armazenado na árvore
+typedef unsigned short avlheight_t; // Tipo da altura da árvore
+typedef unsigned int avlrot_t; // Tipo do número de rotações
 
 // Nodo da árvore binária
 // `height` é a altura do nodo.
@@ -79,6 +78,9 @@ int AVLForEach(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order, in
 // Contar quantos itens a árvore possui
 int AVLCount(AVLTree tree);
 
+// Retorna a altura da árvore
+avlheight_t AVLHeight(AVLTree tree);
+
 // Retorna a altura do nodo
 avlheight_t AVLNodeHeight(AVLNode* node);
 
@@ -97,6 +99,10 @@ int AVLIsNodeBalanced(AVLNode* node);
 
 // Esvazia a árvore
 void AVLEmpty(AVLTree* tree);
+
+// Get e set o número de rotações
+avlrot_t AVLGetRotations();
+void AVLSetRotations(avlrot_t new_rotations);
 
 
 /*

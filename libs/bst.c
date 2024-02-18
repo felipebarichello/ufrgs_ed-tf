@@ -135,6 +135,10 @@ int BSTCount(BinarySearchTree tree) {
     _BSTCount(tree.root);
 }
 
+bstheight_t BSTHeight(BinarySearchTree tree) {
+    return BSTNodeHeight(tree.root);
+}
+
 int BSTNodeHeight(BSTNode* node) {
     if (!node) {
         return 0;

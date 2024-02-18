@@ -6,8 +6,9 @@
 #include "food.h"
 
 
-// Tipo concreto de dado armazenado na árvore
-typedef Food bstdata_t;
+// Aliases para tipos utilizados pela árvore
+typedef Food bstdata_t; // Tipo concreto de dado armazenado na árvore
+typedef unsigned short bstheight_t; // Tipo da altura da árvore
 
 // Nodo da árvore binária
 typedef struct BSTNode {
@@ -71,6 +72,9 @@ int BSTForEach(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide 
 
 // Contar quantos itens a árvore possui
 int BSTCount(BinarySearchTree tree);
+
+// Altura da árvore
+bstheight_t BSTHeight(BinarySearchTree tree);
 
 // Calcular altura do nodo
 int BSTNodeHeight(BSTNode* node);

@@ -5,6 +5,8 @@
 #include "avl.h"
 
 
+avlrot_t avlrotations = 0; // Número de rotações
+
 AVLNode* AVLNewNode(avldata_t data) {
     AVLNode* new_node = (AVLNode*) malloc(sizeof(AVLNode));
     new_node->data = data;
@@ -38,6 +40,7 @@ void _AVLRotateRight(AVLNode** subtree_root) {
     
     AVLNodeUpdateHeight(old_root);
     AVLNodeUpdateHeight(new_root);
+    avlrotations++;
 }
 
 // Função interna. Não exposta no header.
@@ -51,6 +54,7 @@ void _AVLRotateLeft(AVLNode** subtree_root) {
 
     AVLNodeUpdateHeight(old_root);
     AVLNodeUpdateHeight(new_root);
+    avlrotations++;
 }
 
 // Balancear a subárvore após inserção
@@ -216,6 +220,10 @@ int AVLCount(AVLTree tree) {
     _AVLCount(tree.root);
 }
 
+avlheight_t AVLHeight(AVLTree tree) {
+    return AVLNodeHeight(tree.root);
+}
+
 avlheight_t AVLNodeHeight(AVLNode* node) {
     return node->height;
 }
@@ -283,6 +291,14 @@ int _AVLEmpty_free(AVLNode* node) {
 void AVLEmpty(AVLTree* tree) {
     AVLForEach(*tree, AVL_TRAVERSAL_POST, AVL_LEFT, _AVLEmpty_free);
     tree->root = NULL;
+}
+
+avlrot_t AVLGetRotations() {
+    return avlrotations;
+}
+
+void AVLSetRotations(avlrot_t new_rotations) {
+    avlrotations = new_rotations;
 }
 
 
