@@ -23,7 +23,7 @@ AVLTree AVLFromNode(AVLNode* root) {
     return (AVLTree) { root };
 }
 
-avldata_t AVLIsEmpty(AVLTree tree) {
+bool AVLIsEmpty(AVLTree tree) {
     return !tree.root;
 }
 
@@ -64,7 +64,7 @@ void _AVLBalanceAfterInsertion(AVLNode** subtree, avldata_t data) {
         // A subárvore esquerda é mais alta
         AVLNode** tallest_child_slot = &(*subtree)->left;
 
-        if (data > (*tallest_child_slot)->data) {
+        if (AVLIsGreater(data, (*tallest_child_slot)->data)) {
             // Rotação dupla
             _AVLRotateLeft(tallest_child_slot);
         }
@@ -74,7 +74,7 @@ void _AVLBalanceAfterInsertion(AVLNode** subtree, avldata_t data) {
         // A subárvore direita é mais alta
         AVLNode** tallest_child_slot = &(*subtree)->right;
         
-        if (data < (*tallest_child_slot)->data) {
+        if (AVLIsLower(data, (*tallest_child_slot)->data)) {
             // Rotação dupla
             _AVLRotateRight(tallest_child_slot);
         }
@@ -89,9 +89,9 @@ AVLNode* _AVLInsert(AVLNode* node, avldata_t data) {
     // `&node->left` ou `&node->right`, dependendo do valor de `data`
     AVLNode** relevant_child;
 
-    if (data < node->data) {
+    if (AVLIsLower(data, node->data)) {
         relevant_child = &node->left;
-    } else if (data > node->data) {
+    } else if (AVLIsGreater(data, node->data)) {
         relevant_child = &node->right;
     } else {
         // Valor repetido. Não inserir.
@@ -140,9 +140,9 @@ AVLNode* AVLSearch(AVLTree tree, avldata_t data) {
     AVLNode* current_node = tree.root;
 
     while (current_node) {
-        if (data < current_node->data) {
+        if (AVLIsLower(data, current_node->data)) {
             current_node = current_node->left;
-        } else if (data > current_node->data) {
+        } else if (AVLIsGreater(data, current_node->data)) {
             current_node = current_node->right;
         } else {
             return current_node;
@@ -273,49 +273,37 @@ int AVLIsNodeBalanced(AVLNode* node) {
     return balance_factor <= 1 && balance_factor >= -1;
 }
 
-// Função interna para AVLPrintList()
-// Não exposta no header
-int _AVLPrintList_print(AVLNode* node) {
-    printf("%d ", node->data);
-    return 0;
-}
-
-void AVLPrintList(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order) {
-    printf("[ ");
-    _AVLForEach(tree.root, traversal, order, _AVLPrintList_print);
-    printf("]\n");
-}
-
-// Função interna recursiva para AVLDraw()
-// Não exposta no header
-void _AVLDraw(AVLNode* node, unsigned int level) {
-    if (node) {
-        for (int x = 1; x < level; x++) {
-            printf("|  ");
-        }
-
-        printf("+- %d\n", node->data);
-
-        if (node->left) 
-            _AVLDraw(node->left, level + 1);
-
-        if (node->right)
-            _AVLDraw(node->right, level + 1);
-    }
-}
-
-void AVLDraw(AVLTree tree) {
-    _AVLDraw(tree.root, 1);
-}
-
 // Função interna para AVLEmpty()
 // Não exposta no header
 int _AVLEmpty_free(AVLNode* node) {
-    free(node);
+    AVLFreeNode(node);
     return 0;
 }
 
 void AVLEmpty(AVLTree* tree) {
     AVLForEach(*tree, AVL_TRAVERSAL_POST, AVL_LEFT, _AVLEmpty_free);
     tree->root = NULL;
+}
+
+
+/*
+ * Até aqui, neste arquivo, a árvore era agnóstica do tipo concreto de `avldata_t`.
+ * A partir daqui, as funções são específicas para o tipo concreto `Food`.
+ */
+
+bool AVLIsEqual(Food a, Food b) {
+    return FoodIsEqual(a, b);
+}
+
+bool AVLIsGreater(Food a, Food b) {
+    return FoodIsGreater(a, b);
+}
+
+bool AVLIsLower(Food a, Food b) {
+    return FoodIsLower(a, b);
+}
+
+void AVLFreeNode(AVLNode* node) {
+    free(node->data.name);
+    free(node);
 }

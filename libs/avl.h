@@ -2,8 +2,12 @@
 
 #pragma once
 
+#include <stdbool.h>
+#include "food.h"
+
+
 // Tipo concreto de dado armazenado na árvore
-typedef int avldata_t;
+typedef Food avldata_t;
 
 // Tipo concreto da altura da árvore
 typedef unsigned short avlheight_t;
@@ -50,7 +54,7 @@ AVLTree AVLCreate();
 AVLTree AVLFromNode(AVLNode* root);
 
 // Verificar se a árvore binária está vazia
-avldata_t AVLIsEmpty(AVLTree tree);
+bool AVLIsEmpty(AVLTree tree);
 
 // Inserir item na lista em ordem crescente
 // Usar essa função para inserir itens na árvore
@@ -100,3 +104,14 @@ void AVLDraw(AVLTree tree);
 
 // Esvazia a árvore
 void AVLEmpty(AVLTree* tree);
+
+
+/*
+ * Até aqui, neste arquivo, a árvore era agnóstica do tipo concreto de `avldata_t`.
+ * A partir daqui, as funções são específicas para o tipo concreto `Food`.
+ */
+
+bool AVLIsEqual(Food a, Food b);
+bool AVLIsGreater(Food a, Food b);
+bool AVLIsLower(Food a, Food b);
+void AVLFreeNode(AVLNode* node);

@@ -22,7 +22,7 @@ BinarySearchTree BSTFromNode(BSTNode* root) {
     return (BinarySearchTree) { root };
 }
 
-bstdata_t BSTIsEmpty(BinarySearchTree tree) {
+bool BSTIsEmpty(BinarySearchTree tree) {
     return !tree.root;
 }
 
@@ -35,14 +35,14 @@ BSTNode* BSTInsert(BinarySearchTree* tree, bstdata_t data) {
     BSTNode* current_node = tree->root;
 
     for (;;) {
-        if (data < current_node->data) {
+        if (BSTIsLower(data, current_node->data)) {
             if (!current_node->left) {
                 current_node->left = BSTNewNode(data);
                 return current_node->left;
             }
 
             current_node = current_node->left;
-        } else if (data > current_node->data) {
+        } else if (BSTIsGreater(data, current_node->data)) {
             if (!current_node->right) {
                 current_node->right = BSTNewNode(data);
                 return current_node->right;
@@ -60,9 +60,9 @@ BSTNode* BSTSearch(BinarySearchTree tree, bstdata_t data) {
     BSTNode* current_node = tree.root;
 
     while (current_node) {
-        if (data < current_node->data) {
+        if (BSTIsLower(data, current_node->data)) {
             current_node = current_node->left;
-        } else if (data > current_node->data) {
+        } else if (BSTIsGreater(data, current_node->data)) {
             current_node = current_node->right;
         } else {
             return current_node;
@@ -231,11 +231,11 @@ int BSTRemove(BinarySearchTree* tree, bstdata_t data) {
     BSTNode* parent_node = NULL;
 
     while (current_node) {
-        if (data < current_node->data) {
+        if (BSTIsLower(data, current_node->data)) {
             parent_node = current_node;
             current_node = current_node->left;
             last_side = BST_LEFT;
-        } else if (data > current_node->data) {
+        } else if (BSTIsGreater(data, current_node->data)) {
             parent_node = current_node;
             current_node = current_node->right;
             last_side = BST_RIGHT;
@@ -319,4 +319,27 @@ int _BSTEmpty_free(BSTNode* node) {
 void BSTEmpty(BinarySearchTree* tree) {
     BSTForEach(*tree, BST_TRAVERSAL_POST, BST_LEFT, _BSTEmpty_free);
     tree->root = NULL;
+}
+
+
+/*
+ * Até aqui, neste arquivo, a árvore era agnóstica do tipo concreto de `avldata_t`.
+ * A partir daqui, as funções são específicas para o tipo concreto `Food`.
+ */
+
+bool BSTIsEqual(Food a, Food b) {
+    return FoodIsEqual(a, b);
+}
+
+bool BSTIsGreater(Food a, Food b) {
+    return FoodIsGreater(a, b);
+}
+
+bool BSTIsLower(Food a, Food b) {
+    return FoodIsLower(a, b);
+}
+
+void BSTFreeNode(BSTNode* node) {
+    free(node->data.name);
+    free(node);
 }

@@ -2,9 +2,12 @@
 
 #pragma once
 
+#include <stdbool.h>
+#include "food.h"
+
 
 // Tipo concreto de dado armazenado na árvore
-typedef int bstdata_t;
+typedef Food bstdata_t;
 
 // Nodo da árvore binária
 typedef struct BSTNode {
@@ -45,7 +48,7 @@ BinarySearchTree BSTCreate();
 BinarySearchTree BSTFromNode(BSTNode* root);
 
 // Verificar se a árvore binária está vazia
-bstdata_t BSTIsEmpty(BinarySearchTree tree);
+bool BSTIsEmpty(BinarySearchTree tree);
 
 // Inserir item na lista em ordem crescente
 // Usar essa função para inserir itens na árvore
@@ -91,3 +94,14 @@ int BSTRemove(BinarySearchTree* tree, bstdata_t data);
 
 // Esvazia a árvore
 void BSTEmpty(BinarySearchTree* tree);
+
+
+/*
+ * Até aqui, neste arquivo, a árvore era agnóstica do tipo concreto de `avldata_t`.
+ * A partir daqui, as funções são específicas para o tipo concreto `Food`.
+ */
+
+bool BSTIsEqual(Food a, Food b);
+bool BSTIsGreater(Food a, Food b);
+bool BSTIsLower(Food a, Food b);
+void BSTFreeNode(BSTNode* node);

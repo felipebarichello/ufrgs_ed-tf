@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include "libs/bst.h"
 #include "libs/avl.h"
 #include "libs/auxiliary.h"
@@ -18,42 +19,47 @@ AVLNode* consulta(AVLNode *a, char *chave);
 
 int main() {
     FILE* fhandle;
-    Food food_buf;
-    AVLTree tree_1;
-    AVLNode* node_buf;
-    int status, calories, grams, total_calories=0;
+    Food current_food;
 
-    // Abrir tabela de calorias
-    fhandle = fopen("1000Shuffled.csv", "r");
+
+    // Ler tabela de calorias
+    fhandle = fopen("tests\\1000Shuffled.csv", "r"); // TODO: Utilizar arquivo fornecido pela linha de comando
 
     if (!fhandle) {
         printf("ERRO: Nao foi possivel abrir a tabela de calorias\n");
         return 1;
     }
 
-    // Construir ABP com os dados da tabela de calorias
-    // BinarySearchTree tree = BSTCreate();
+    // TODO: Inserir nas árvores
+
+    fclose(fhandle);
 
     
-    // Abertura do arquivo de alimentos ingeridos
-    fhandle = fopen("day1.csv", "r");
+    // Ler alimentos ingeridos
+    AVLTree avl = AVLCreate();
+    fhandle = fopen("tests\\day1.csv", "r"); // TODO: Utilizar arquivo fornecido pela linha de comando
 
-    if (fhandle) {
-        while ((status = read_next_food(fhandle, &food_buf, BUFFER_SIZE)) == FOOD_READ_OK) {
-            status = read_next_food(fhandle, &food_buf, BUFFER_SIZE);
-            if (status != FOOD_READ_ERROR) {
-                grams = food_buf->value;
-                node_buf = consulta(tree_1, food_buf.name);
-                calories = node_buf->data.value;
-                total_calories += grams*calories;
-            } else {
-                printf(“Linha com valores inválidos.”);
-                return 1;
-            }
-        }
-    } else {
-        printf(“Erro na abertura do arquivo.”);
+    if (!fhandle) {
+        printf("ERRO: Nao foi possivel abrir a tabela de alimentos ingeridos\n");
+        return 1;
     }
+
+    enum FoodReadStatus status;
+    foodv_t total_calories = 0;
+    while ((status = FoodReadNext(fhandle, &current_food, BUFFER_SIZE)) == FOOD_READ_OK) {
+        if (status == FOOD_READ_ERROR) {
+            printf("ERRO: Tabela de alimentos ingeridos tem linhas invalidas\n");
+            return 1;
+        }
+
+        foodv_t quantity = current_food.value; // Quantidade ingerida, em gramas
+
+        AVLNode* node = consulta(avl.root, current_food.name);
+        foodv_t calories_per_portion = node->data.value;
+        total_calories += quantity * calories_per_portion;
+    }
+
+    fclose(fhandle);
 
     return 0;
 }

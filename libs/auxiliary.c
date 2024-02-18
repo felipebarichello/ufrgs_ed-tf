@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include "auxiliary.h"
 
 void str_tolower(char *string_buffer) { // TODO: não testado
