@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <time.h>
 #include "libs/bst.h"
 #include "libs/avl.h"
 #include "libs/auxiliary.h"
@@ -22,6 +23,9 @@ int main(int argc, char* argv[]) {
     char *calories_filename, *consumption_filename, *report_filename;
     BinarySearchTree bst = BSTCreate();
     AVLTree avl = AVLCreate();
+
+    // Tempo que levaram as operações nas árvores, em clocks
+    timespec bst_insertion_time = {0}, avl_insertion_time = {0}, bst_search_time = {0}, avl_search_time = {0};
 
     /* Ler argumentos da linha de comando */
     switch (argc) {
@@ -58,8 +62,15 @@ int main(int argc, char* argv[]) {
         Food current_food;
 
         while ((status = FoodReadNext(calories_file, &current_food, BUFFER_SIZE)) == FOOD_READ_OK) {
+            timespec clock_zero, clock_bst, clock_avl;
+            clock_gettime(CLOCK_MONOTONIC, &clock_zero);
             BSTInsert(&bst, current_food);
+            clock_gettime(CLOCK_MONOTONIC, &clock_bst);
             AVLInsert(&avl, current_food);
+            clock_gettime(CLOCK_MONOTONIC, &clock_avl);
+
+            bst_insertion_time = time_add(bst_insertion_time, time_diff(clock_bst, clock_zero));
+            avl_insertion_time = time_add(avl_insertion_time, time_diff(clock_avl, clock_bst));
         }
         
         if (status == FOOD_READ_ERROR) {
@@ -117,12 +128,21 @@ int main(int argc, char* argv[]) {
             }
 
             foodv_t quantity = current_food.value; // Quantidade ingerida, em gramas
+
+            struct timespec clock_start, clock_end;
+            clock_gettime(CLOCK_MONOTONIC, &clock_start);
             BSTNode* node = consulta_ABP(bst.root, current_food.name);
+            clock_gettime(CLOCK_MONOTONIC, &clock_end);
+            bst_search_time = time_add(bst_search_time, time_diff(clock_end, clock_start));
+
             foodv_t calories_per_portion = node->data.value; // Calorias a cada 100g
             float partial_calories = quantity * calories_per_portion / 100.0f; // Calorias adicionadas pelo item consumido
             total_calories += partial_calories; // Adicionar ao total de calorias ingeridas
             
+            clock_gettime(CLOCK_MONOTONIC, &clock_start);
             consulta_AVL(avl.root, current_food.name); // Utilizar AVL para contar comparações
+            clock_gettime(CLOCK_MONOTONIC, &clock_end);
+            avl_search_time = time_add(avl_search_time, time_diff(clock_end, clock_start));
 
             // Registro da consulta no relatório
             fprintf(
@@ -143,20 +163,24 @@ int main(int argc, char* argv[]) {
         }
 
         fprintf(report_file, "\nTotal de %.2f calorias consumidas no dia.\n\n", total_calories);
-
+        
         // Estatísticas das árvores
         fprintf(report_file, "======== ESTATÍSTICAS ABP ============\n");
-        fprintf(report_file, "Número de nodos: %d\n", BSTCount(bst));
-        fprintf(report_file, "Altura: %d\n", BSTHeight(bst));
-        fprintf(report_file, "Rotações: 0\n");
-        fprintf(report_file, "Comparações: %d\n\n", comp_ABP);
+        fprintf(report_file, "Número de nodos: %d\n",              BSTCount(bst));
+        fprintf(report_file, "Altura: %d\n",                       BSTHeight(bst));
+        fprintf(report_file, "Rotações: 0\n");                     // Sempre 0
+        fprintf(report_file, "Comparações: %d\n",                  comp_ABP);
+        fprintf(report_file, "Tempo de inserção: %d ns\n",   bst_insertion_time.tv_nsec);
+        fprintf(report_file, "Tempo de consulta: %d ns\n\n", bst_search_time.tv_nsec);
 
         // TODO: Estatísticas da AVL
         fprintf(report_file, "======== ESTATÍSTICAS AVL ============\n");
-        fprintf(report_file, "Número de nodos: %d\n", AVLCount(avl));
-        fprintf(report_file, "Altura: %d\n", AVLHeight(avl));
-        fprintf(report_file, "Rotações: %d\n", AVLGetRotations());
-        fprintf(report_file, "Comparações: %d\n", comp_AVL);
+        fprintf(report_file, "Número de nodos: %d\n",              AVLCount(avl));
+        fprintf(report_file, "Altura: %d\n",                       AVLHeight(avl));
+        fprintf(report_file, "Rotações: %d\n",                     AVLGetRotations());
+        fprintf(report_file, "Comparações: %d\n",                  comp_AVL);
+        fprintf(report_file, "Tempo de inserção: %d ns\n",   avl_insertion_time.tv_nsec);
+        fprintf(report_file, "Tempo de consulta: %d ns\n\n", avl_search_time.tv_nsec);
 
         fclose(report_file);
     }
