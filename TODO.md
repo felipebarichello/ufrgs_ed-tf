@@ -8,10 +8,13 @@
         [ ] AVL
 
 [ ] Carregar tabela de refeições
+    [x] Carregar linhas
+    [x] Carregar refeições em structs
+    [ ] Usar arquivo especificado na linha de comando
 
 [ ] Relatório
-    [ ] Escrever informações sobre cada alimento
-    [ ] Calorias totais
+    [x] Escrever informações sobre cada alimento
+    [x] Calorias totais
     [ ] Estatísticas das árvores
         [ ] Número de nodos
         [ ] Altura
