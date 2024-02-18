@@ -22,7 +22,7 @@ enum FoodReadStatus FoodReadNext(FILE* fhandle, Food* food_ret, size_t buffer_si
     char* result = fgets(buffer, buffer_size, fhandle); // Ler linha do arquivo `fhandle`
 
     if (!result) { // Fim do arquivo
-        return 0;
+        return FOOD_READ_EOF;
     }
 
     // Separar o nome da comida do seu valor associado
@@ -32,7 +32,7 @@ enum FoodReadStatus FoodReadNext(FILE* fhandle, Food* food_ret, size_t buffer_si
         return FOOD_READ_ERROR;
     }
 
-    char* value_str = strtok(NULL, NULL); // String com o valor
+    char* value_str = strtok(NULL, "\0"); // String com o valor
 
     if (!value_str) {
         return FOOD_READ_ERROR;
@@ -44,7 +44,8 @@ enum FoodReadStatus FoodReadNext(FILE* fhandle, Food* food_ret, size_t buffer_si
 
     // Retornar a comida lida
     Food food;
-    strcpy(food.name, food_name);
+    food.name = (char*)malloc(strlen(food_name) + 1); // Alocar nome da comida
+    strcpy(food.name, food_name); // Copiar nome da comida
     food.value = atoi(value_str);
     *food_ret = food;
 

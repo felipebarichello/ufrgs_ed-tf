@@ -95,13 +95,6 @@ int AVLNodeBalanceFactor(AVLNode* node);
 // Retorna 1 se o nodo está balanceado, 0 caso contrário
 int AVLIsNodeBalanced(AVLNode* node);
 
-// Imprimir árvore
-// Encapsulamento sobre AVLForEach() para imprimir a árvore
-void AVLPrintList(AVLTree tree, enum AVLTraversal traversal, enum AVLSide order);
-
-// Imprimir a árvore em um formato visual
-void AVLDraw(AVLTree tree);
-
 // Esvazia a árvore
 void AVLEmpty(AVLTree* tree);
 

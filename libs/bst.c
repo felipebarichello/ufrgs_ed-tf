@@ -185,41 +185,6 @@ int BSTNodeBalanceFactor(BSTNode* node) {
     return lheight - rheight;
 }
 
-// Função interna para BSTPrintList()
-// Não exposta no header
-int _BSTPrintList_print(BSTNode* node) {
-    printf("%d ", node->data);
-    return 0;
-}
-
-void BSTPrintList(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order) {
-    printf("[ ");
-    _BSTForEach(tree.root, traversal, order, _BSTPrintList_print);
-    printf("]\n");
-}
-
-// Função interna recursiva para BSTDraw()
-// Não exposta no header
-void _BSTDraw(BSTNode* node, unsigned int level) {
-    if (node) {
-        for (int x = 1; x < level; x++) {
-            printf("|  ");
-        }
-
-        printf("+- %d \n", node->data);
-
-        if (node->left) 
-            _BSTDraw(node->left, level + 1);
-
-        if (node->right)
-            _BSTDraw(node->right, level + 1);
-    }
-}
-
-void BSTDraw(BinarySearchTree tree) {
-    _BSTDraw(tree.root, 1);
-}
-
 int BSTRemove(BinarySearchTree* tree, bstdata_t data) {
     if (BSTIsEmpty(*tree)) {
         return 0;
