@@ -174,7 +174,6 @@ int main(int argc, char* argv[]) {
         fprintf(report_file, "Tempo de consulta: %d ns\n", bst_search_time.tv_nsec);
         fprintf(report_file, "Tempo total: %d ns\n\n", bst_search_time.tv_nsec + bst_insertion_time.tv_nsec);
 
-        // TODO: Estatísticas da AVL
         fprintf(report_file, "======== ESTATÍSTICAS AVL ============\n");
         fprintf(report_file, "Número de nodos: %d\n",              AVLCount(avl));
         fprintf(report_file, "Altura: %d\n",                       AVLHeight(avl));
