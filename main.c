@@ -171,7 +171,8 @@ int main(int argc, char* argv[]) {
         fprintf(report_file, "Rotações: 0\n");                     // Sempre 0
         fprintf(report_file, "Comparações: %d\n",                  comp_ABP);
         fprintf(report_file, "Tempo de inserção: %d ns\n",   bst_insertion_time.tv_nsec);
-        fprintf(report_file, "Tempo de consulta: %d ns\n\n", bst_search_time.tv_nsec);
+        fprintf(report_file, "Tempo de consulta: %d ns\n", bst_search_time.tv_nsec);
+        fprintf(report_file, "Tempo total: %d ns\n\n", bst_search_time.tv_nsec + bst_insertion_time.tv_nsec);
 
         // TODO: Estatísticas da AVL
         fprintf(report_file, "======== ESTATÍSTICAS AVL ============\n");
@@ -180,7 +181,8 @@ int main(int argc, char* argv[]) {
         fprintf(report_file, "Rotações: %d\n",                     AVLGetRotations());
         fprintf(report_file, "Comparações: %d\n",                  comp_AVL);
         fprintf(report_file, "Tempo de inserção: %d ns\n",   avl_insertion_time.tv_nsec);
-        fprintf(report_file, "Tempo de consulta: %d ns\n\n", avl_search_time.tv_nsec);
+        fprintf(report_file, "Tempo de consulta: %d ns\n", avl_search_time.tv_nsec);
+        fprintf(report_file, "Tempo total: %d ns\n", avl_search_time.tv_nsec + avl_insertion_time.tv_nsec);
 
         fclose(report_file);
     }
