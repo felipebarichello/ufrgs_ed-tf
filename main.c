@@ -73,15 +73,36 @@ int main() {
         // TODO: Utilizar arquivo fornecido pela linha de comando
         fprintf(report_file, "Calorias calculadas para `day1.csv` usando a tabela `1000shuffled.csv`.\n\n");
 
-        enum FoodReadStatus status;
         foodv_t total_calories = 0;
-        Food current_food;
+        enum FoodReadStatus status;
+        bool error = false; // Flag de erro
 
-        while ((status = FoodReadNext(consumption_file, &current_food, BUFFER_SIZE)) == FOOD_READ_OK) {
+        for (;;) {
+            Food current_food;
+            status = FoodReadNext(consumption_file, &current_food, BUFFER_SIZE);
+            bool leave = false; // Flag para parar de ler
+
+            switch (status) {
+                case FOOD_READ_ERROR:
+                case FOOD_READ_EOF: // Parar de ler
+                    leave = true;
+                    break;
+
+                case FOOD_READ_SKIP: // Pular linha
+                    continue;
+
+                case FOOD_READ_OK: // Ler linha
+                    break;
+            }
+
+            if (leave) {
+                break;
+            }
+
             foodv_t quantity = current_food.value; // Quantidade ingerida, em gramas
             BSTNode* node = consulta_ABP(bst.root, current_food.name);
             foodv_t calories_per_portion = node->data.value; // Calorias a cada 100g
-            foodv_t partial_calories = quantity * calories_per_portion; // Calorias adicionadas pelo item consumido
+            foodv_t partial_calories = quantity * calories_per_portion / 100; // Calorias adicionadas pelo item consumido
             total_calories += partial_calories; // Adicionar ao total de calorias ingeridas
 
             // Registro da consulta no relatório
@@ -94,13 +115,13 @@ int main() {
                 partial_calories
             );
         }
+        
+        fclose(consumption_file); // Fechar arquivo de alimentos ingeridos
 
-        if (status == FOOD_READ_ERROR) {
-            printf("ERRO: Tabela de calorias tem linhas invalidas\n");
+        if (error) {
+            printf("ERRO: Tabela de alimentos ingeridos tem linhas invalidas\n");
             return 1;
         }
-
-        fclose(consumption_file); // Fechar arquivo de alimentos ingeridos
 
         fprintf(report_file, "\nTotal de %d calorias consumidas no dia.\n\n", total_calories);
 

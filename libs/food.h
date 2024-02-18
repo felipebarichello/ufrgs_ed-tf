@@ -14,7 +14,8 @@ typedef struct Food {
 enum FoodReadStatus {
     FOOD_READ_OK,
     FOOD_READ_EOF,
-    FOOD_READ_ERROR
+    FOOD_READ_ERROR,
+    FOOD_READ_SKIP
 };
 
 // Comparações entre comidas
