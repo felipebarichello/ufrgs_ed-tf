@@ -42,7 +42,7 @@ int main() {
     fhandle = fopen("tests\\day1.csv", "r"); // Alimentos ingeridos
 
     if (!fhandle) {
-        printf("ERRO: Nao foi possivel abrir o arquivo de alimentos ingeridos.");
+        printf("ERRO: Nao foi possivel abrir o arquivo de alimentos ingeridos.\n");
         return 1;
     }
 
@@ -50,7 +50,7 @@ int main() {
     FILE* fhandle_report = fopen("tests\\saída_day1.txt", "w"); // Relatório
 
     if (!fhandle_report) {
-        printf("ERRO: Nao foi possivel criar arquivo de saida.");
+        printf("ERRO: Nao foi possivel criar arquivo de saida.\n");
         return 1;
     }
     
@@ -66,7 +66,8 @@ int main() {
 
     while ((status = FoodReadNext(fhandle, &current_food, BUFFER_SIZE)) == FOOD_READ_OK) {
         if (status == FOOD_READ_ERROR) {
-            printf("ERRO: Tabela de alimentos ingeridos tem linhas invalidas\n\n");
+            printf("ERRO: Tabela de alimentos ingeridos tem linhas invalidas\n");
+            fprintf(fhandle_report, "ERRO: Tabela de alimentos ingeridos tem linhas invalidas\n");
             return 1;
         }
 
@@ -77,7 +78,14 @@ int main() {
         total_calories += partial_calories; // Adicionar ao total de calorias ingeridas
 
         // Registro da consulta no relatório
-        fprintf(fhandle_report, "%dg de %s (%d calorias por 100g) = %d calorias\n", quantity, current_food.name, calories_per_portion, partial_calories);
+        fprintf(
+            fhandle_report,
+            "%dg de %s (%d calorias por 100g) = %d calorias\n",
+            quantity,
+            current_food.name,
+            calories_per_portion,
+            partial_calories
+        );
     }
 
     fclose(fhandle); // Fechar arquivo de alimentos ingeridos
