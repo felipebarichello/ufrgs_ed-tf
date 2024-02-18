@@ -1,5 +1,10 @@
+# Processo de build
 /build/
 *.exe
 *.o
 
+# Arquivos gerados pelo programa
+*.log
+
+# Editores de código
 /.vscode/

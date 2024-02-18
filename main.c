@@ -18,13 +18,34 @@ BSTNode* consulta_ABP(BSTNode *a, char *chave);
 AVLNode* consulta_AVL(AVLNode *a, char *chave);
 
 
-int main() {
+int main(int argc, char* argv[]) {
+    char *calories_filename, *consumption_filename, *report_filename;
     BinarySearchTree bst = BSTCreate();
+
+    /* Ler argumentos da linha de comando */
+    switch (argc) {
+        case 1:
+        case 2:
+            printf("ERRO: Faltam argumentos.\n");
+            return 1;
+
+        case 3:
+            calories_filename = argv[1];
+            consumption_filename = argv[2];
+            report_filename = "report.log"; // Nome padrão
+            break;
+
+        case 4:
+            calories_filename = argv[1];
+            consumption_filename = argv[2];
+            report_filename = argv[3];
+            break;
+    }
 
 
     /* Ler tabela de calorias */
     {
-        FILE* calories_file = fopen("tests\\1000Shuffled.csv", "r"); // TODO: Utilizar arquivo fornecido pela linha de comando
+        FILE* calories_file = fopen(calories_filename, "r");
 
         if (!calories_file) {
             printf("ERRO: Nao foi possivel abrir a tabela de calorias.\n");
@@ -52,17 +73,14 @@ int main() {
     
     /* Ler alimentos ingeridos e escrever o relatório */
     {
-        // TODO: Utilizar arquivo fornecido pela linha de comando
-        FILE* consumption_file = fopen("tests\\day1.csv", "r"); // Alimentos ingeridos
+        FILE* consumption_file = fopen(consumption_filename, "r"); // Alimentos ingeridos
 
         if (!consumption_file) {
             printf("ERRO: Nao foi possivel abrir o arquivo de alimentos ingeridos.\n");
             return 1;
         }
 
-        // TODO: Utilizar arquivo fornecido pela linha de comando
-        // TODO: Testar nomes de arquivo com acentos
-        FILE* report_file = fopen("tests\\saida_day1.txt", "w"); // Relatório
+        FILE* report_file = fopen(report_filename, "w"); // Relatório
 
         if (!report_file) {
             printf("ERRO: Nao foi possivel criar arquivo de saida.\n");
@@ -70,8 +88,7 @@ int main() {
         }
     
         // Cabeçalho do arquivo de saída
-        // TODO: Utilizar arquivo fornecido pela linha de comando
-        fprintf(report_file, "Calorias calculadas para `day1.csv` usando a tabela `1000shuffled.csv`.\n\n");
+        fprintf(report_file, "Calorias calculadas para `%s` usando a tabela `%s`.\n\n", consumption_filename, calories_filename);
 
         foodv_t total_calories = 0;
         enum FoodReadStatus status;
