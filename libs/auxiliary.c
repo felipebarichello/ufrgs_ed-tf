@@ -1,16 +1,14 @@
 #include <ctype.h>
 #include "auxiliary.h"
 
-void str_tolower(char *string_buffer) { // TODO: não testado
-    int i=0;
-    char c;
+void str_tolower(char* string) {
+    for (int i = 0;; i++) {
+        char c = string[i];
 
-    c = string_buffer[i];
-    while (c != '\0') {
-        tolower(c);
-        string_buffer[i] = c;
+        if (c == '\0') {
+            break;
+        }
 
-        i++;
-        c = string_buffer[i];
+        string[i] = tolower(c);
     }
 }

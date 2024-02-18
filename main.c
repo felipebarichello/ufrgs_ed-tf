@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
         // Cabeçalho do arquivo de saída
         fprintf(report_file, "Calorias calculadas para `%s` usando a tabela `%s`.\n\n", consumption_filename, calories_filename);
 
-        foodv_t total_calories = 0;
+        float total_calories = 0.0f;
         enum FoodReadStatus status;
         bool error = false; // Flag de erro
 
@@ -119,7 +119,7 @@ int main(int argc, char* argv[]) {
             foodv_t quantity = current_food.value; // Quantidade ingerida, em gramas
             BSTNode* node = consulta_ABP(bst.root, current_food.name);
             foodv_t calories_per_portion = node->data.value; // Calorias a cada 100g
-            foodv_t partial_calories = quantity * calories_per_portion / 100; // Calorias adicionadas pelo item consumido
+            float partial_calories = quantity * calories_per_portion / 100.0f; // Calorias adicionadas pelo item consumido
             total_calories += partial_calories; // Adicionar ao total de calorias ingeridas
             
             consulta_AVL(avl.root, current_food.name); // Utilizar AVL para contar comparações
@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
             // Registro da consulta no relatório
             fprintf(
                 report_file,
-                "%dg de %s (%d calorias por 100g) = %d calorias\n",
+                "%dg de %s (%d calorias por 100g) = %.2f calorias\n",
                 quantity,
                 current_food.name,
                 calories_per_portion,
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        fprintf(report_file, "\nTotal de %d calorias consumidas no dia.\n\n", total_calories);
+        fprintf(report_file, "\nTotal de %.2f calorias consumidas no dia.\n\n", total_calories);
 
         // Estatísticas das árvores
         fprintf(report_file, "======== ESTATÍSTICAS ABP ============\n");

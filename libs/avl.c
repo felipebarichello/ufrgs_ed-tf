@@ -40,7 +40,6 @@ void _AVLRotateRight(AVLNode** subtree_root) {
     
     AVLNodeUpdateHeight(old_root);
     AVLNodeUpdateHeight(new_root);
-    avlrotations++;
 }
 
 // Função interna. Não exposta no header.
@@ -54,7 +53,6 @@ void _AVLRotateLeft(AVLNode** subtree_root) {
 
     AVLNodeUpdateHeight(old_root);
     AVLNodeUpdateHeight(new_root);
-    avlrotations++;
 }
 
 // Balancear a subárvore após inserção
@@ -74,6 +72,7 @@ void _AVLBalanceAfterInsertion(AVLNode** subtree, avldata_t data) {
         }
 
         _AVLRotateRight(subtree);
+        avlrotations++;
     } else if (balance_factor < -1) {
         // A subárvore direita é mais alta
         AVLNode** tallest_child_slot = &(*subtree)->right;
@@ -84,6 +83,7 @@ void _AVLBalanceAfterInsertion(AVLNode** subtree, avldata_t data) {
         }
 
         _AVLRotateLeft(subtree);
+        avlrotations++;
     }
 }
 
